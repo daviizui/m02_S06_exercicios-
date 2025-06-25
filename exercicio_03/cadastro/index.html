@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="teste.js" defer></script>
+    <title>Celular</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <form id="form">
+        <h1>Cadastro de celulares</h1>
+        <div class="marca">
+          <h2>Selecione uma marca</h2>
+          <select name="marca" id="marcaCelular" required>
+            <option value="Sansung">Sansung</option>
+            <option value="Apple">Apple</option>
+            <option value="Motorola">Motorola</option>
+            <option value="Xiaomi">Xiaomi</option>
+            <option value="Google">Google</option>
+          </select>
+        </div>
+
+        <div class="input-box">
+          <input
+            type="text"
+            id="modelo"
+            name="modelo"
+            placeholder="Modelo"
+            required
+          />
+        </div>
+
+        <div class="input-box">
+          <input type="text" id="cor" name="cor" placeholder="Cor" required />
+        </div>
+
+        <div class="input-box">
+          <input
+            type="number"
+            id="valor"
+            name="valor"
+            placeholder="Valor"
+            required
+          />
+        </div>
+
+        <div class="input-radio">
+          <div class="radio">
+            <input
+              type="radio"
+              id="novo"
+              name="condicao"
+              value="novo"
+              class="radio_marcador"
+            />
+            <label for="novo">Novo</label>
+          </div>
+          <div class="radio">
+            <input
+              type="radio"
+              id="usado"
+              name="condicao"
+              value="usado"
+              class="radio_marcador"
+            />
+            <label for="usado">Usado</label>
+          </div>
+        </div>
+
+        <div class="textarea">
+          <h2>Demais informações</h2>
+          <textarea name="demaisInformacoes" id="demaisInformacoes"></textarea>
+        </div>
+
+        <div class="btn-form">
+          <button type="submit" class="btn" id="btnSalvar">Salvar</button>
+          <button type="submit" class="btn">
+            <a class="aBtn" href="/exercicio_03/listagem/index.html">Voltar</a>
+          </button>
+        </div>
+
+        <div class="register-link">
+          <p>Don't have an account? <a href="#">Register</a></p>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
