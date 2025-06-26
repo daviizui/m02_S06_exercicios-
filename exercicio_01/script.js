@@ -1,22 +1,40 @@
 const btn = document.getElementById("btn");
 const input = document.getElementsByTagName("input")[0];
-const div = document.getElementById("div");
+const ul = document.getElementById("ul");
 const btnExcluir = document.getElementsByClassName("btnExcluir");
 const localStorageKey = "minhaListaDeTarefas";
 
-const ul = document.createElement("ul");
-
-function carregarTarefas() {
-  const tarefasSalvas = localStorage.getItem(localStorageKey);
-  return tarefasSalvas ? JSON.parse(tarefasSalvas) : [];
-}
+let tarefas = JSON.parse(localStorage.getItem(localStorageKey)) || [];
 
 btn.addEventListener("click", () => {
-  ul.innerHTML += `
-  <li>${input.value}</li>
-  <button class="btnExcluir">Excluir</button>
- `;
-  localStorage.setItem(localStorageKey, JSON.stringify(input.value));
+  criaTarefa(input.value);
+  input.value = "";
+  salvaTarefas();
 });
 
-div.append(ul);
+function criaTarefa(descricao) {
+  const li = document.createElement("li");
+  li.classList = "li";
+
+  const p = document.createElement("p");
+  p.textContent = descricao;
+  const btnExcluir = document.createElement("button");
+  btnExcluir.textContent = "Excluir";
+
+  li.appendChild(p);
+  li.appendChild(btnExcluir);
+  ul.appendChild(li);
+
+  const tarefaExiste = tarefas.some((tarefa) => tarefa.descricao === descricao);
+  if (!tarefaExiste) {
+    tarefas.push({ descricao });
+  }
+}
+
+function salvaTarefas() {
+  localStorage.setItem(localStorageKey, JSON.stringify(tarefas));
+}
+
+tarefas.forEach((tarefa) => {
+  criaTarefa(tarefa.descricao);
+});
