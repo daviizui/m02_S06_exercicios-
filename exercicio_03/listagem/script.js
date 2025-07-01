@@ -1,12 +1,24 @@
 const tabela = document.getElementById("tabela");
-const btnExcluirDados = document.getElementById("excluirDado");
 
-let celularesDados = JSON.parse(localStorage.getItem("dados")) || [];
+// Vamos usar "celularesCadastrados" como a chave principal no localStorage
+// para consistência com o arquivo de cadastro
+let celularesDados =
+  JSON.parse(localStorage.getItem("celularesCadastrados")) || [];
 
-function criarCelular(dado, index) {
+// Função para renderizar a tabela
+function renderizarTabela() {
+  tabela.innerHTML = ""; // Limpa a tabela antes de renderizar
+  celularesDados.forEach((dado, index) => {
+    const linhaDado = criarLinhaCelular(dado, index);
+    tabela.appendChild(linhaDado);
+  });
+}
+
+function criarLinhaCelular(dado, index) {
   const tr = document.createElement("tr");
   tr.classList.add("linhaTabela");
-  tr.dataset.index = index;
+  tr.dataset.index = index; // Armazena o índice na linha para fácil acesso
+
   const tdMarca = document.createElement("td");
   tdMarca.textContent = dado.marca;
   const tdModelo = document.createElement("td");
@@ -19,19 +31,28 @@ function criarCelular(dado, index) {
   tdEstado.textContent = dado.condicao;
   const tdInfos = document.createElement("td");
   tdInfos.textContent = dado.demaisInformacoes;
-  const btnExcluir = document.createElement("button");
-  btnExcluir.innerHTML = `<button id="excluirDado">Excluir</button>`;
 
+  const tdAcoes = document.createElement("td"); // Nova célula para os botões de ação
+
+  // Botão Excluir
+  const btnExcluir = document.createElement("button");
+  btnExcluir.textContent = "Excluir";
+  btnExcluir.classList.add("btnExcluir"); // Adicione uma classe para estilizar se quiser
   btnExcluir.addEventListener("click", () => {
-    tr.remove();
-    celularesDados.splice(index, 1);
-    localStorage.setItem("dados", JSON.stringify(celularesDados));
+    excluirCelular(index);
   });
 
-  localStorage.removeItem(
-    "celularesCadastrados",
-    JSON.stringify(celularesDados)
-  );
+  // Botão Alterar
+  const btnAlterar = document.createElement("button");
+  btnAlterar.textContent = "Alterar";
+  btnAlterar.classList.add("btnAlterar"); // Adicione uma classe para estilizar se quiser
+  btnAlterar.addEventListener("click", () => {
+    // Redireciona para a página de cadastro com o índice na URL
+    window.location.href = `/exercicio_03/cadastro/index.html?editIndex=${index}`;
+  });
+
+  tdAcoes.appendChild(btnAlterar); // Adiciona o botão Alterar
+  tdAcoes.appendChild(btnExcluir); // Adiciona o botão Excluir
 
   tr.appendChild(tdMarca);
   tr.appendChild(tdModelo);
@@ -39,12 +60,15 @@ function criarCelular(dado, index) {
   tr.appendChild(tdPreco);
   tr.appendChild(tdEstado);
   tr.appendChild(tdInfos);
-  tr.appendChild(btnExcluir);
+  tr.appendChild(tdAcoes); // Adiciona a célula com os botões de ação
   return tr;
 }
 
-celularesDados.forEach((dado, index) => {
-  const linhaDado = criarCelular(dado, index);
+function excluirCelular(index) {
+  celularesDados.splice(index, 1); // Remove 1 item do array a partir do índice
+  localStorage.setItem("celularesCadastrados", JSON.stringify(celularesDados));
+  renderizarTabela(); // Renderiza a tabela novamente após a exclusão
+}
 
-  tabela.appendChild(linhaDado);
-});
+// Renderiza a tabela quando a página carrega
+document.addEventListener("DOMContentLoaded", renderizarTabela);
