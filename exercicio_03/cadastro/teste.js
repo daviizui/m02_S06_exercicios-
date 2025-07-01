@@ -7,6 +7,7 @@ const radioNovo = document.getElementById("novo");
 const radioUsado = document.getElementById("usado");
 const demaisInformacoes = document.getElementById("demaisInformacoes");
 const btnSalvar = document.getElementById("btnSalvar");
+const body = document.body; // Referência ao body para aplicar a classe
 
 // Array de campos que precisam ser verificados para habilitar o botão
 const camposObrigatorios = [marcaCelular, modelo, cor, valor];
@@ -14,9 +15,19 @@ const camposObrigatorios = [marcaCelular, modelo, cor, valor];
 // Variável para armazenar o índice do celular que está sendo editado
 let indiceEdicao = -1; // -1 significa que não estamos em modo de edição
 
-// --- Funções de Ajuda ---
+// --- Funções para Tema (replicadas do script.js para aplicar o tema) ---
+function aplicarTema(theme) {
+  if (theme === "dark") {
+    body.classList.add("dark-theme");
+    body.classList.remove("light-theme");
+  } else {
+    body.classList.add("light-theme");
+    body.classList.remove("dark-theme");
+  }
+  // Não precisamos salvar o tema aqui, pois ele é salvo pela página de listagem
+}
 
-// Função para verificar se todos os campos obrigatórios estão preenchidos
+// --- Funções de Ajuda (mantidas do seu código anterior) ---
 function verificarCampos() {
   let todosPreenchidos = true;
 
@@ -40,7 +51,6 @@ function verificarCampos() {
   btnSalvar.disabled = !todosPreenchidos;
 }
 
-// Função para coletar e salvar/atualizar os dados no localStorage
 function salvarOuAtualizarDados() {
   const dadosCelular = {
     marca: marcaCelular.value,
@@ -59,11 +69,9 @@ function salvarOuAtualizarDados() {
     JSON.parse(localStorage.getItem("celularesCadastrados")) || [];
 
   if (indiceEdicao !== -1) {
-    // Modo de Edição: Atualiza o registro existente
     celularesSalvos[indiceEdicao] = dadosCelular;
     alert("Celular atualizado com sucesso!");
   } else {
-    // Modo de Cadastro: Adiciona um novo registro
     celularesSalvos.push(dadosCelular);
     alert("Celular cadastrado com sucesso!");
   }
@@ -72,20 +80,18 @@ function salvarOuAtualizarDados() {
   console.log("Dados salvos/atualizados:", dadosCelular);
 }
 
-// Função para limpar os campos do formulário
 function limparCampos() {
-  marcaCelular.value = "Sansung"; // Define um valor padrão para o select
+  marcaCelular.value = "Sansung";
   modelo.value = "";
   cor.value = "";
   valor.value = "";
   radioNovo.checked = false;
   radioUsado.checked = false;
   demaisInformacoes.value = "";
-  indiceEdicao = -1; // Reseta o índice de edição
+  indiceEdicao = -1;
   verificarCampos();
 }
 
-// Função para preencher o formulário com dados de um celular existente
 function preencherFormularioParaEdicao(index) {
   let celularesSalvos =
     JSON.parse(localStorage.getItem("celularesCadastrados")) || [];
@@ -105,15 +111,13 @@ function preencherFormularioParaEdicao(index) {
       radioUsado.checked = true;
     }
 
-    // Armazena o índice do item que está sendo editado
     indiceEdicao = index;
-    verificarCampos(); // Habilita o botão Salvar com os dados preenchidos
+    verificarCampos();
   }
 }
 
-// --- Event Listeners ---
+// --- Event Listeners e Inicialização ---
 
-// Adiciona listeners para os eventos que disparam a verificação
 modelo.addEventListener("input", verificarCampos);
 cor.addEventListener("input", verificarCampos);
 valor.addEventListener("input", verificarCampos);
@@ -121,24 +125,27 @@ marcaCelular.addEventListener("change", verificarCampos);
 radioNovo.addEventListener("change", verificarCampos);
 radioUsado.addEventListener("change", verificarCampos);
 
-// Listener para o botão Salvar (agora também para atualizar)
 btnSalvar.addEventListener("click", (event) => {
-  event.preventDefault(); // Impede o envio padrão do formulário
+  event.preventDefault();
   salvarOuAtualizarDados();
   limparCampos();
+  // Opcional: redirecionar de volta para a listagem após salvar/atualizar
+  // window.location.href = "/exercicio_03/listagem/index.html";
 });
 
 // Ao carregar a página:
 document.addEventListener("DOMContentLoaded", () => {
-  // Verifica se há um parâmetro 'editIndex' na URL
+  // 1. Carrega o tema salvo no localStorage e aplica
+  const savedTheme = localStorage.getItem("theme") || "light"; // Pega o tema salvo
+  aplicarTema(savedTheme); // Aplica o tema na página de cadastro
+
+  // 2. Verifica se há um parâmetro 'editIndex' na URL
   const urlParams = new URLSearchParams(window.location.search);
   const editIndex = urlParams.get("editIndex");
 
   if (editIndex !== null) {
-    // Se 'editIndex' existe, estamos em modo de edição
     preencherFormularioParaEdicao(parseInt(editIndex));
   } else {
-    // Caso contrário, estamos em modo de cadastro normal
-    verificarCampos(); // Desabilita o botão inicialmente se os campos estiverem vazios
+    verificarCampos();
   }
 });

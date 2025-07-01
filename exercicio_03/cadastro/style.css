@@ -155,3 +155,75 @@ body {
 #textarea {
   padding: 10px;
 }
+
+/* --- Tema Escuro --- */
+body.dark-theme {
+  background-color: #2c2c2c; /* Fundo escuro */
+  color: #f0f0f0; /* Texto claro */
+}
+
+/* Cadastro de celulares - Ajustes para o tema escuro */
+body.dark-theme .wrapper {
+  background-color: #3a3a3a; /* Fundo mais escuro para o wrapper */
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-theme .wrapper h1,
+body.dark-theme .marca h2,
+body.dark-theme h2 {
+  color: #ffcc00; /* Cor de destaque para títulos no tema escuro */
+}
+
+body.dark-theme .marca select,
+body.dark-theme .input-box input,
+body.dark-theme .textarea textarea {
+  background-color: #555; /* Fundo escuro para inputs/selects/textarea */
+  color: #f0f0f0;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .input-box input::placeholder {
+  color: #ccc;
+}
+
+body.dark-theme .btn {
+  background-color: #ffcc00; /* Botões com destaque no tema escuro */
+  color: #333;
+}
+
+body.dark-theme .aBtn {
+  color: #333;
+}
+
+body.dark-theme .register-link p a {
+  color: #ffcc00;
+}
+
+/* Listagem de celulares - Ajustes para o tema escuro */
+body.dark-theme .container {
+  background-color: #3a3a3a; /* Fundo mais escuro para o container da tabela */
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-theme table {
+  border: 1px solid #555;
+}
+
+body.dark-theme th,
+body.dark-theme td {
+  border: 1px solid #555;
+}
+
+body.dark-theme th {
+  background-color: #ffcc00; /* Cabeçalho da tabela com destaque */
+  color: #333;
+}
+
+body.dark-theme tr:nth-child(even) {
+  background-color: #4a4a4a; /* Linhas pares escuras */
+}
+
+body.dark-theme tr:hover {
+  background-color: #555; /* Hover mais escuro */
+}
